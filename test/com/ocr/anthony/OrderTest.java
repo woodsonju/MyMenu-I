@@ -63,6 +63,7 @@ public class OrderTest {
         assertEquals("Vous n'avez pas choisi de menu parmi les choix proposés\n", outContent.toString().replace("\r\n", "\n"));
     }
     
+    
     @Test
     public void Given_ChikenInStandardInput_When_MenuIsRun_Then_DisplayCorrectProcess() {
         System.setIn(new ByteArrayInputStream("1\n".getBytes()));
@@ -72,5 +73,85 @@ public class OrderTest {
         assertEquals(output.endsWith("Vous avez choisi comme menu : poulet\n"), true);
         assertEquals(output.length() > "Vous avez choisi comme menu : poulet\n".length(), true);
     }
+
+    @Test
+    public void Given_VegetablesAndAllSides_When_DisplaySideSelected_Then_DisplayVegetablesSentence() {
+        order.displaySelectedSide(1, true);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme accompagnement : légumes frais\n", output);
+    }
+
+    @Test
+    public void Given_FriesAndAllSides_When_DisplaySideSelected_Then_DisplayFriesSentence() {
+        order.displaySelectedSide(2, true);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme accompagnement : frites\n", output);
+    }
+
+    @Test
+    public void Given_RicesAndAllSides_When_DisplaySideSelected_Then_DisplayRicesSentence() {
+        order.displaySelectedSide(3, true);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme accompagnement : riz\n", output);
+    }
+
+    @Test
+    public void Given_BadValueAndAllSides_When_DisplaySideSelected_Then_DisplayErrorSentence() {
+        order.displaySelectedSide(15, true);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous n'avez pas choisi d'accompagnememnt parmi les choix proposés\n", output);
+    }
+
+    @Test
+    public void Given_RiceAndNotAllSides_When_DisplaySideSelected_Then_DisplayRiceSentence() {
+        order.displaySelectedSide(1, false);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme accompagnement : riz\n", output);
+    }
+
+    @Test
+    public void Given_NoRiceAndNotAllSides_When_DisplaySideSelected_Then_DisplayNoRiceSentence() {
+        order.displaySelectedSide(2, false);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme accompagnement : pas de riz\n", output);
+    }
+
+    @Test
+    public void Given_BadValueAndNotAllSides_When_DisplaySideSelected_Then_DisplayErrorSentence() {
+        order.displaySelectedSide(8, false);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous n'avez pas choisi d'accompagnememnt parmi les choix proposés\n", output);
+    }
+
+    @Test
+    public void Given_Water_When_DisplaySelectedDrink_Then_DisplayWaterSentence() {
+        order.displaySelectedDrink(1);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme boisson : eau plate\n", output);
+    }
+
+    @Test
+    public void Given_SparklingWater_When_DisplaySelectedDrink_Then_DisplaySparklingWaterSentence() {
+        order.displaySelectedDrink(2);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme boisson : eau gazeuse\n", output);
+    }
+
+    @Test
+    public void Given_Soda_When_DisplaySelectedDrink_Then_DisplaySparklingSodaSentence() {
+        order.displaySelectedDrink(3);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous avez choisi comme boisson : soda\n", output);
+    }
+
+    @Test
+    public void Given_BadValueAndNotAllSides_When_DisplaySelectedDrink_Then_DisplayErrorSentence() {
+        order.displaySelectedDrink(6);
+        String output = outContent.toString().replace("\r\n", "\n");
+        assertEquals("Vous n'avez pas choisi de  boisson parmi les choix proposés\n", output);
+    }
     
+
+
+
 }
