@@ -4,9 +4,7 @@ import java.util.Scanner;
 
 public class Order {
     Scanner sc = new Scanner(System.in);
-
-
-
+    
     /**
      * Run asking process for a menu
      */
@@ -137,44 +135,14 @@ public class Order {
         }
     }
 
-    /**
-     * Display a question about a category in the standard
-     * input, get response and display it
-     * @param category the category of the question
-     * @param responses available responses
-     */
-    public void askSomething(String category, String[] responses) {
-        System.out.println("Choix " + category);
-        for (int i = 1; i <= responses.length; i++) {
-            System.out.println(i + " - " + responses[i - 1]);
-        }
-        System.out.println("Que souhaitez vous comme " + category + "?");
-        int nbResponse;
-        boolean responseIsGood = false;
-        do {
-            nbResponse = sc.nextInt();
-            if(nbResponse >= 1 && nbResponse <= responses.length)
-                responseIsGood = true;
-            if(responseIsGood == true)
-                System.out.println("Vous avez choisi comme " + category + " : " + responses[nbResponse - 1]);
-            else {
-                boolean isVowel = "aeiouy".contains(Character.toString(category.charAt(0)));
-                if (isVowel) {
-                    System.out.println("Vous n'avez pas choisi d'" + category + " parmi les choix proposés");
-                } else {
-                    System.out.println("Vous n'avez pas choisi de " + category + " parmi les choix proposés");
-                }
-            }
-        } while(responseIsGood == false);
-        
-    }
+    
 
     /**
      * Display a question about menu in the standard input, get response and display it
      */
     public void askMenu() {
         String[] menus = {"poulet", "boeuf", "végétarien"};
-        askSomething("menu", menus);
+        Interaction.askSomething("menu", menus);
     }
 
     /**
@@ -184,10 +152,10 @@ public class Order {
     public void askSide(boolean allSideEnable) {
         if(allSideEnable){
             String[] responseAllSide = {"légumes frais", "frites", "riz"};
-            askSomething("accompagnement", responseAllSide);
+            Interaction.askSomething("accompagnement", responseAllSide);
         } else {
             String[] responsesOnlyRice = {"riz", "pas de riz"};
-            askSomething("accompagnement", responsesOnlyRice);
+            Interaction.askSomething("accompagnement", responsesOnlyRice);
         }
     }
 
@@ -196,6 +164,6 @@ public class Order {
      */
     public void askDrink(){
         String[] responseDrink = {"eau plate", "eau gazeuse", "soda"};
-       askSomething("boisson", responseDrink);
+        Interaction.askSomething("boisson", responseDrink);
     }
 }
