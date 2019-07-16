@@ -5,6 +5,35 @@ import java.util.Scanner;
 public class Order {
     Scanner sc = new Scanner(System.in);
 
+
+
+    /**
+     * Run asking process for a menu
+     */
+    public void runMenu() {
+        this.displayAvailableMenu();
+        int nbMenu;
+        int nbSide;
+        int nbDrink;
+        do {
+            nbMenu = sc.nextInt();
+            this.displaySelectedMenu(nbMenu);
+            switch (nbMenu) {
+                case 1:
+                    askSide(true);
+                    askDrink();
+                    break;
+                case 2:
+                    askSide(true);
+                    break;
+                case 3:
+                    askSide(false);
+                    askDrink();
+                    break;
+            }
+        } while(nbMenu < 1 || nbMenu > 3);
+    }
+
     /**
      * Display all available menus in the restaurant.
      */
@@ -33,52 +62,6 @@ public class Order {
             System.out.println("Vous n'avez pas choisi de menu parmi les choix proposés");
     }
 
-    /**
-     * Run asking process for a menu
-     */
-    public void runMenu() {
-        this.displayAvailableMenu();
-        int nbMenu;
-        int nbSide;
-        int nbDrink;
-        do {
-            nbMenu = sc.nextInt();
-            this.displaySelectedMenu(nbMenu);
-            switch (nbMenu) {
-                case 1:
-                    this.displayAvailableSide(true);
-                    do {
-                        nbSide = sc.nextInt();
-                        this.displaySelectedSide(nbSide, true);
-                    } while(nbSide < 1 || nbSide > 3);
-                    this.displayAvailableDrink();
-                    do {
-                        nbDrink = sc.nextInt();
-                        this.displaySelectedDrink(nbDrink);
-                    } while (nbDrink < 1 || nbDrink > 3);
-                    break;
-                case 2:
-                    this.displayAvailableSide(true);
-                    do {
-                        nbSide = sc.nextInt();
-                        this.displaySelectedSide(nbSide, true);
-                    } while(nbSide < 1 || nbSide > 3);
-                    break;
-                case 3:
-                    this.displayAvailableSide(false);
-                    do {
-                        nbSide = sc.nextInt();
-                        this.displaySelectedSide(nbSide, false);
-                    } while(nbSide < 1 || nbSide > 2);
-                    this.displayAvailableDrink();
-                    do {
-                        nbDrink = sc.nextInt();
-                        this.displaySelectedDrink(nbDrink);
-                    } while (nbDrink < 1 || nbDrink > 3);
-                    break;
-            }
-        } while(nbMenu < 1 || nbMenu > 3);
-    }
 
 
     /**
@@ -142,37 +125,7 @@ public class Order {
                 System.out.println("Vous n'avez pas choisi de boisson parmi les choix proposés");
         }
     }
-
-    /**
-     * Display all available sides depending on all sides enable or not.
-     * All sides = vegetables, frites and rice
-     * No all sides = rice or not
-     *
-     * @param allSideEnable enable display for all side or not
-     */
-    public void displayAvailableSide(boolean allSideEnable) {
-        System.out.println("Choix d'accompagnement");
-        if (allSideEnable) {
-            System.out.println("1 - légumes frais");
-            System.out.println("2 - frites");
-            System.out.println("3 - riz");
-        } else {
-            System.out.println("1 - riz");
-            System.out.println("2 - pas de riz");
-        }
-        System.out.println("Que souhaitez-vous comme accompagnement ?");
-    }
-
-    /**
-     * Display all available drinks in the restaurant
-     */
-    public void displayAvailableDrink() {
-        System.out.println("Choix boisson");
-        System.out.println("1 - eau plate");
-        System.out.println("2 - eau gazeuse");
-        System.out.println("3 - soda");
-        System.out.println("Que souhaitez-vous comme boisson ?");
-    }
+    
 
     public void runMenus() {
         System.out.println("Combien souhaitez vous commander de menus ?");
@@ -182,6 +135,67 @@ public class Order {
             runMenu();
             counter ++;
         }
+    }
+
+    /**
+     * Display a question about a category in the standard
+     * input, get response and display it
+     * @param category the category of the question
+     * @param responses available responses
+     */
+    public void askSomething(String category, String[] responses) {
+        System.out.println("Choix " + category);
+        for (int i = 1; i <= responses.length; i++) {
+            System.out.println(i + " - " + responses[i - 1]);
+        }
+        System.out.println("Que souhaitez vous comme " + category + "?");
+        int nbResponse;
+        boolean responseIsGood = false;
+        do {
+            nbResponse = sc.nextInt();
+            if(nbResponse >= 1 && nbResponse <= responses.length)
+                responseIsGood = true;
+            if(responseIsGood == true)
+                System.out.println("Vous avez choisi comme " + category + " : " + responses[nbResponse - 1]);
+            else {
+                boolean isVowel = "aeiouy".contains(Character.toString(category.charAt(0)));
+                if (isVowel) {
+                    System.out.println("Vous n'avez pas choisi d'" + category + " parmi les choix proposés");
+                } else {
+                    System.out.println("Vous n'avez pas choisi de " + category + " parmi les choix proposés");
+                }
+            }
+        } while(responseIsGood == false);
         
+    }
+
+    /**
+     * Display a question about menu in the standard input, get response and display it
+     */
+    public void askMenu() {
+        String[] menus = {"poulet", "boeuf", "végétarien"};
+        askSomething("menu", menus);
+    }
+
+    /**
+     * Display a question about menu in the standard input, get response and display it 
+     * @param allSideEnable
+     */
+    public void askSide(boolean allSideEnable) {
+        if(allSideEnable){
+            String[] responseAllSide = {"légumes frais", "frites", "riz"};
+            askSomething("accompagnement", responseAllSide);
+        } else {
+            String[] responsesOnlyRice = {"riz", "pas de riz"};
+            askSomething("accompagnement", responsesOnlyRice);
+        }
+    }
+
+    /**
+     * Display a question about drink in the standard input, get response and display it
+     */
+    public void askDrink(){
+        String[] responseDrink = {"eau plate", "eau gazeuse", "soda"};
+       askSomething("boisson", responseDrink);
     }
 }
